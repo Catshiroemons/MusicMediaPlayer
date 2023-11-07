@@ -1,0 +1,17 @@
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\bin\Debug\MusicPlayer.exe.config
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\bin\Debug\MusicPlayer.exe
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\bin\Debug\MusicPlayer.pdb
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\bin\Debug\Interop.WMPLib.dll
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\bin\Debug\AxInterop.WMPLib.dll
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.AssemblyReference.cache
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\Interop.WMPLib.dll
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\AxInterop.WMPLib.dll
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.ResolveComReference.cache
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.Form1.resources
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.Properties.Resources.resources
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.GenerateResource.cache
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.CoreCompileInputs.cache
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.exe
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.pdb
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\bin\Debug\taglib-sharp.dll
+D:\Study\Cau truc du lieu va giai thuat\Project\MusicPlayer\MusicPlayer\obj\Debug\MusicPlayer.csproj.CopyComplete
