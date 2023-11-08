@@ -55,10 +55,6 @@ namespace MusicPlayer
 
         private void track_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*txt.Text = track_list.Text;
-            btn_save.Enabled = true;
-            player.URL = @track_list.Text;
-            player.Ctlcontrols.play();*/
               player.URL = paths[track_list.SelectedIndex];
               player.Ctlcontrols.play();
               try
@@ -317,7 +313,6 @@ namespace MusicPlayer
                         lbl_album.Visible = true;
                         lbl_album.Text = (file.Tag.Album);
 
-                        // Play the selected music file with Windows Media Player
                         player.URL = selectedFilePath;
                     }
                 }
@@ -344,11 +339,9 @@ namespace MusicPlayer
             if(ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK)
             {
                 files = ofd.FileNames;
-                //paths = ofd.FileNames;
                 paths = (paths ?? Enumerable.Empty<string>()).Concat(ofd.FileNames).ToArray();
                 for (int x = 0; x < files.Length; x++)
                 {
-                    // track_list.Items.Add(files[x]);
                    TagLib.File file = TagLib.File.Create(files[x]);
                     if (file.Tag.Title == null)
                     {
@@ -363,14 +356,6 @@ namespace MusicPlayer
                 }
                 
             } 
-            /*if (ofd.ShowDialog() == DialogResult.Cancel) { return; }
-            foreach (string s in ofd.FileNames)
-            {
-                track_list.Items.Add(Path.GetFileName(s));
-                str.Add(s);
-            }
-
-            */
         }
     }
 }
