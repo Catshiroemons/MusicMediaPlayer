@@ -16,6 +16,7 @@ namespace MusicPlayer
     {
         public Form1()
         {
+            this.Text = "Simple Music Player";
             InitializeComponent();
             player.uiMode = "none";
             track_volume.Value = 90;
@@ -54,11 +55,11 @@ namespace MusicPlayer
 
         private void track_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txt.Text = track_list.Text;
+            /*txt.Text = track_list.Text;
             btn_save.Enabled = true;
             player.URL = @track_list.Text;
-            player.Ctlcontrols.play();
-            /*  player.URL = paths[track_list.SelectedIndex];
+            player.Ctlcontrols.play();*/
+              player.URL = paths[track_list.SelectedIndex];
               player.Ctlcontrols.play();
               try
               {
@@ -73,7 +74,8 @@ namespace MusicPlayer
                   lbl_album.Text = (file.Tag.Album);
 
               }
-              catch { } */
+              catch { }
+            btn_save.Enabled = true;
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
@@ -89,8 +91,6 @@ namespace MusicPlayer
 
         private void btn_play_Click(object sender, EventArgs e)
         {
-            player.URL = @track_list.Text;
-            player.URL = @favorite_list.Text;
             player.Ctlcontrols.play();
         }
 
@@ -186,8 +186,6 @@ namespace MusicPlayer
 
         private void p_bar_MouseDown(object sender, MouseEventArgs e)
         {
-            player.URL = @track_list.Text;
-            player.URL = @favorite_list.Text;
             player.Ctlcontrols.currentPosition = player.currentMedia.duration * e.X / p_bar.Width;
         }
 
@@ -225,6 +223,7 @@ namespace MusicPlayer
         {
             track_list.Visible = true;
             btn_save.Visible = true;
+            txt_search.Visible = true;
             favorite_list.Visible = false;
             btn_savef.Visible = false;
             btn_loadf.Visible = false;
@@ -233,44 +232,97 @@ namespace MusicPlayer
 
         private void btn_save_Click(object sender, EventArgs e)
         {
+            if (track_list.SelectedIndex >= 0)
+            {
+                string selectedText = track_list.SelectedItem.ToString();
+                string selectedPath = paths[track_list.SelectedIndex];
+                string displayValue = $"{selectedPath}";
+                favorite_list.Items.Add(displayValue);
+            }
             btn_save.Enabled = false;
-            favorite_list.Items.Add(txt.Text);
         }
 
         private void btn_savef_Click(object sender, EventArgs e)
         {
-            StreamWriter Save = new StreamWriter("../../Storage/Favotire.txt");
+            StreamWriter Save = new StreamWriter("../../Storage/favorite.txt");
 
             foreach(var item in favorite_list.Items)
             {
                 Save.WriteLine(item.ToString());
                 this.Refresh();
             }
-            MessageBox.Show("Save Successfully!");
+            MessageBox.Show("Saved Successfully!");
             Save.Close();
             favorite_list.Items.Clear();
-            btn_savef.Enabled = false;
-            btn_favorite.Enabled = true;
+            btn_savef.Enabled=false;
         }
 
         private void btn_loadf_Click(object sender, EventArgs e)
         {
-            using (StreamReader read = new StreamReader("../../Storage/Favotire.txt"))
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-             
-                string line;
-                while((line=read.ReadLine())!=null)
-                {
-                    favorite_list.Items.Add(line);
-                }
-            };
+
+                string filePath = "../../Storage/favorite.txt";
+                    favorite_list.Items.Clear();
+
+                    string[] lines = File.ReadAllLines(filePath);
+                    foreach (string line in lines)
+                    {
+                        if (File.Exists(line))
+                        {
+                            using (TagLib.File file = TagLib.File.Create(line))
+                            {
+                                favorite_list.Items.Add(line);
+                            }
+                        }
+                        else
+                        {
+                            favorite_list.Items.Add($"Invalid file: {line}");
+                        }
+                    }
+               
+            }
+            btn_savef.Enabled = true;
         }
 
+ 
         private void favorite_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txt.Text = favorite_list.Text;
-            player.URL = @favorite_list.Text;
-            player.Ctlcontrols.play();
+            if (favorite_list.SelectedIndex != -1)
+            {
+                string selectedFilePath = favorite_list.SelectedItem.ToString();
+
+                if (System.IO.File.Exists(selectedFilePath))
+                {
+                    using (TagLib.File file = TagLib.File.Create(selectedFilePath))
+                    {
+                        if (file.Tag.Pictures.Length > 0)
+                        {
+                            var bin = (byte[])(file.Tag.Pictures[0].Data.Data);
+                            if (bin != null)
+                            {
+                                pic_art.Image = Image.FromStream(new MemoryStream(bin));
+                            }
+                            else
+                            {
+                                string specificImagePath = "../../Resources/Disc.png";
+                                pic_art.Image = Image.FromFile(specificImagePath);
+                            }
+                     
+                        }
+                        lbl_titlesong.Visible = true;
+                        lbl_titlesong.Text = (file.Tag.Title);
+                        lbl_author.Visible = true;
+                        lbl_author.Text = (file.Tag.FirstPerformer);
+                        lbl_album.Visible = true;
+                        lbl_album.Text = (file.Tag.Album);
+
+                        // Play the selected music file with Windows Media Player
+                        player.URL = selectedFilePath;
+                    }
+                }
+            }
+            btn_delete.Enabled = true;
         }
 
         private void btn_delete_Click(object sender, EventArgs e)
@@ -283,12 +335,13 @@ namespace MusicPlayer
             {
                 MessageBox.Show("There is nothing to delete!");
             }
+            btn_delete.Enabled = false;
         }
 
         private void btn_open_Click(object sender, EventArgs e)
         {
             ofd.Multiselect = true;
-            /*if(ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK)
+            if(ofd.ShowDialog()==System.Windows.Forms.DialogResult.OK)
             {
                 files = ofd.FileNames;
                 //paths = ofd.FileNames;
@@ -299,25 +352,25 @@ namespace MusicPlayer
                    TagLib.File file = TagLib.File.Create(files[x]);
                     if (file.Tag.Title == null)
                     {
-                        info_list.Items.Add(Path.GetFileName(files[x]));
+                        track_list.Items.Add(Path.GetFileName(files[x]));
                         listResult.Add(Path.GetFileName(files[x]));
                     }
                     else
                     {
-                        info_list.Items.Add(file.Tag.Title);
+                        track_list.Items.Add(file.Tag.Title);
                         listResult.Add(file.Tag.Title);
                     }
                 }
                 
-            } */
-            if (ofd.ShowDialog() == DialogResult.Cancel) { return; }
+            } 
+            /*if (ofd.ShowDialog() == DialogResult.Cancel) { return; }
             foreach (string s in ofd.FileNames)
             {
-                track_list.Items.Add(Path.GetFullPath(s));
+                track_list.Items.Add(Path.GetFileName(s));
                 str.Add(s);
             }
 
-
+            */
         }
     }
 }
