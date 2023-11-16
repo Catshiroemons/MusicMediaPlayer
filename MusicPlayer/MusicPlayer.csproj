@@ -127,6 +127,9 @@
     <None Include="Resources\Speaker.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Off.png" />
+    <None Include="Resources\Random.png" />
+    <None Include="Resources\Repeat.png" />
     <Content Include="Storage\Favorite.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

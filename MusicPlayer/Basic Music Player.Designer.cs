@@ -47,7 +47,9 @@
             this.btn_playlist = new System.Windows.Forms.Button();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.track_list = new System.Windows.Forms.ListBox();
+            this.btn_repeat = new System.Windows.Forms.Button();
             this.lbl_volume = new System.Windows.Forms.Label();
+            this.player = new AxWMPLib.AxWindowsMediaPlayer();
             this.lbl_track_end = new System.Windows.Forms.Label();
             this.lbl_track_start = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -60,7 +62,9 @@
             this.btn_stop = new System.Windows.Forms.Button();
             this.btn_preview = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.player = new AxWMPLib.AxWindowsMediaPlayer();
+            this.RepeatTimer = new System.Windows.Forms.Timer(this.components);
+            this.next_time = new System.Windows.Forms.Timer(this.components);
+            this.random_time = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,9 +74,9 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_art)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             this.SuspendLayout();
             // 
             // splitter1
@@ -80,7 +84,7 @@
             this.splitter1.Cursor = System.Windows.Forms.Cursors.VSplit;
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
             this.splitter1.Location = new System.Drawing.Point(0, 0);
-            this.splitter1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitter1.Margin = new System.Windows.Forms.Padding(2);
             this.splitter1.MinExtra = 0;
             this.splitter1.MinSize = 0;
             this.splitter1.Name = "splitter1";
@@ -91,7 +95,7 @@
             // splitter2
             // 
             this.splitter2.Location = new System.Drawing.Point(0, 2);
-            this.splitter2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitter2.Margin = new System.Windows.Forms.Padding(2);
             this.splitter2.Name = "splitter2";
             this.splitter2.Size = new System.Drawing.Size(2, 545);
             this.splitter2.TabIndex = 11;
@@ -102,7 +106,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -115,6 +119,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Coral;
+            this.splitContainer1.Panel2.Controls.Add(this.btn_repeat);
             this.splitContainer1.Panel2.Controls.Add(this.lbl_volume);
             this.splitContainer1.Panel2.Controls.Add(this.player);
             this.splitContainer1.Panel2.Controls.Add(this.lbl_track_end);
@@ -139,7 +144,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -228,7 +233,7 @@
             this.btn_delete.BackColor = System.Drawing.Color.White;
             this.btn_delete.FlatAppearance.BorderSize = 0;
             this.btn_delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_delete.Location = new System.Drawing.Point(169, 389);
+            this.btn_delete.Location = new System.Drawing.Point(353, 389);
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(86, 23);
             this.btn_delete.TabIndex = 9;
@@ -241,7 +246,7 @@
             this.btn_loadf.BackColor = System.Drawing.Color.White;
             this.btn_loadf.FlatAppearance.BorderSize = 0;
             this.btn_loadf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_loadf.Location = new System.Drawing.Point(353, 389);
+            this.btn_loadf.Location = new System.Drawing.Point(261, 389);
             this.btn_loadf.Name = "btn_loadf";
             this.btn_loadf.Size = new System.Drawing.Size(86, 23);
             this.btn_loadf.TabIndex = 8;
@@ -254,7 +259,7 @@
             this.btn_savef.BackColor = System.Drawing.Color.White;
             this.btn_savef.FlatAppearance.BorderSize = 0;
             this.btn_savef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_savef.Location = new System.Drawing.Point(261, 389);
+            this.btn_savef.Location = new System.Drawing.Point(169, 389);
             this.btn_savef.Name = "btn_savef";
             this.btn_savef.Size = new System.Drawing.Size(86, 23);
             this.btn_savef.TabIndex = 7;
@@ -267,7 +272,7 @@
             this.btn_save.BackColor = System.Drawing.Color.White;
             this.btn_save.FlatAppearance.BorderSize = 0;
             this.btn_save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_save.Location = new System.Drawing.Point(323, 389);
+            this.btn_save.Location = new System.Drawing.Point(233, 389);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(115, 23);
             this.btn_save.TabIndex = 6;
@@ -278,6 +283,7 @@
             // 
             // favorite_list
             // 
+            this.favorite_list.AllowDrop = true;
             this.favorite_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.favorite_list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -288,9 +294,14 @@
             this.favorite_list.Margin = new System.Windows.Forms.Padding(7, 0, 0, 0);
             this.favorite_list.Name = "favorite_list";
             this.favorite_list.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.favorite_list.Size = new System.Drawing.Size(637, 384);
+            this.favorite_list.Size = new System.Drawing.Size(670, 384);
             this.favorite_list.TabIndex = 4;
             this.favorite_list.SelectedIndexChanged += new System.EventHandler(this.favorite_list_SelectedIndexChanged);
+            this.favorite_list.DragDrop += new System.Windows.Forms.DragEventHandler(this.favorite_list_DragDrop);
+            this.favorite_list.DragOver += new System.Windows.Forms.DragEventHandler(this.favorite_list_DragOver);
+            this.favorite_list.MouseDown += new System.Windows.Forms.MouseEventHandler(this.favorite_list_MouseDown);
+            this.favorite_list.MouseMove += new System.Windows.Forms.MouseEventHandler(this.favorite_list_MouseMove);
+            this.favorite_list.MouseUp += new System.Windows.Forms.MouseEventHandler(this.favorite_list_MouseUp);
             // 
             // btn_favorite
             // 
@@ -323,7 +334,7 @@
             // 
             this.txt_search.Location = new System.Drawing.Point(0, 390);
             this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(318, 20);
+            this.txt_search.Size = new System.Drawing.Size(229, 20);
             this.txt_search.TabIndex = 1;
             this.txt_search.Text = "Search";
             this.txt_search.Visible = false;
@@ -332,6 +343,7 @@
             // 
             // track_list
             // 
+            this.track_list.AllowDrop = true;
             this.track_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.track_list.BackColor = System.Drawing.Color.White;
@@ -342,9 +354,35 @@
             this.track_list.Margin = new System.Windows.Forms.Padding(7, 0, 0, 0);
             this.track_list.Name = "track_list";
             this.track_list.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.track_list.Size = new System.Drawing.Size(637, 384);
+            this.track_list.Size = new System.Drawing.Size(670, 384);
             this.track_list.TabIndex = 0;
+            this.track_list.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.track_list_DrawItem);
             this.track_list.SelectedIndexChanged += new System.EventHandler(this.track_list_SelectedIndexChanged);
+            this.track_list.DragDrop += new System.Windows.Forms.DragEventHandler(this.track_list_DragDrop);
+            this.track_list.DragOver += new System.Windows.Forms.DragEventHandler(this.track_list_DragOver);
+            this.track_list.MouseDown += new System.Windows.Forms.MouseEventHandler(this.track_list_MouseDown);
+            this.track_list.MouseMove += new System.Windows.Forms.MouseEventHandler(this.track_list_MouseMove);
+            this.track_list.MouseUp += new System.Windows.Forms.MouseEventHandler(this.track_list_MouseUp);
+            // 
+            // btn_repeat
+            // 
+            this.btn_repeat.BackColor = System.Drawing.Color.Transparent;
+            this.btn_repeat.BackgroundImage = global::MusicPlayer.Properties.Resources.Off;
+            this.btn_repeat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_repeat.FlatAppearance.BorderSize = 0;
+            this.btn_repeat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_repeat.Font = new System.Drawing.Font("Microsoft Uighur", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_repeat.ForeColor = System.Drawing.Color.Salmon;
+            this.btn_repeat.Location = new System.Drawing.Point(264, 76);
+            this.btn_repeat.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_repeat.Name = "btn_repeat";
+            this.btn_repeat.Size = new System.Drawing.Size(32, 26);
+            this.btn_repeat.TabIndex = 16;
+            this.btn_repeat.Text = "Off";
+            this.btn_repeat.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.btn_repeat.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btn_repeat.UseVisualStyleBackColor = false;
+            this.btn_repeat.Click += new System.EventHandler(this.btn_repeat_Click_1);
             // 
             // lbl_volume
             // 
@@ -354,6 +392,15 @@
             this.lbl_volume.Size = new System.Drawing.Size(27, 13);
             this.lbl_volume.TabIndex = 14;
             this.lbl_volume.Text = "90%";
+            // 
+            // player
+            // 
+            this.player.Enabled = true;
+            this.player.Location = new System.Drawing.Point(316, 32);
+            this.player.Name = "player";
+            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
+            this.player.Size = new System.Drawing.Size(618, 56);
+            this.player.TabIndex = 13;
             // 
             // lbl_track_end
             // 
@@ -384,7 +431,7 @@
             this.pictureBox1.BackgroundImage = global::MusicPlayer.Properties.Resources.Speaker;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(6, 13);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(22, 24);
             this.pictureBox1.TabIndex = 10;
@@ -393,7 +440,7 @@
             // track_volume
             // 
             this.track_volume.Location = new System.Drawing.Point(38, 13);
-            this.track_volume.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.track_volume.Margin = new System.Windows.Forms.Padding(2);
             this.track_volume.Maximum = 100;
             this.track_volume.Name = "track_volume";
             this.track_volume.Size = new System.Drawing.Size(266, 45);
@@ -404,7 +451,7 @@
             // p_bar
             // 
             this.p_bar.Location = new System.Drawing.Point(315, 96);
-            this.p_bar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.p_bar.Margin = new System.Windows.Forms.Padding(2);
             this.p_bar.Name = "p_bar";
             this.p_bar.Size = new System.Drawing.Size(619, 7);
             this.p_bar.TabIndex = 7;
@@ -418,8 +465,8 @@
             this.btn_open.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btn_open.FlatAppearance.BorderSize = 0;
             this.btn_open.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_open.Location = new System.Drawing.Point(258, 72);
-            this.btn_open.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_open.Location = new System.Drawing.Point(230, 72);
+            this.btn_open.Margin = new System.Windows.Forms.Padding(2);
             this.btn_open.Name = "btn_open";
             this.btn_open.Size = new System.Drawing.Size(29, 32);
             this.btn_open.TabIndex = 5;
@@ -433,8 +480,8 @@
             this.btn_next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btn_next.FlatAppearance.BorderSize = 0;
             this.btn_next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_next.Location = new System.Drawing.Point(210, 74);
-            this.btn_next.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_next.Location = new System.Drawing.Point(192, 74);
+            this.btn_next.Margin = new System.Windows.Forms.Padding(2);
             this.btn_next.Name = "btn_next";
             this.btn_next.Size = new System.Drawing.Size(24, 26);
             this.btn_next.TabIndex = 4;
@@ -448,8 +495,8 @@
             this.btn_pause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btn_pause.FlatAppearance.BorderSize = 0;
             this.btn_pause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_pause.Location = new System.Drawing.Point(161, 74);
-            this.btn_pause.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_pause.Location = new System.Drawing.Point(154, 74);
+            this.btn_pause.Margin = new System.Windows.Forms.Padding(2);
             this.btn_pause.Name = "btn_pause";
             this.btn_pause.Size = new System.Drawing.Size(24, 26);
             this.btn_pause.TabIndex = 3;
@@ -463,8 +510,8 @@
             this.btn_play.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btn_play.FlatAppearance.BorderSize = 0;
             this.btn_play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_play.Location = new System.Drawing.Point(98, 65);
-            this.btn_play.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_play.Location = new System.Drawing.Point(96, 65);
+            this.btn_play.Margin = new System.Windows.Forms.Padding(2);
             this.btn_play.Name = "btn_play";
             this.btn_play.Size = new System.Drawing.Size(40, 44);
             this.btn_play.TabIndex = 2;
@@ -478,8 +525,8 @@
             this.btn_stop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btn_stop.FlatAppearance.BorderSize = 0;
             this.btn_stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_stop.Location = new System.Drawing.Point(54, 74);
-            this.btn_stop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_stop.Location = new System.Drawing.Point(58, 74);
+            this.btn_stop.Margin = new System.Windows.Forms.Padding(2);
             this.btn_stop.Name = "btn_stop";
             this.btn_stop.Size = new System.Drawing.Size(24, 26);
             this.btn_stop.TabIndex = 1;
@@ -494,8 +541,8 @@
             this.btn_preview.FlatAppearance.BorderSize = 0;
             this.btn_preview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_preview.ForeColor = System.Drawing.Color.Transparent;
-            this.btn_preview.Location = new System.Drawing.Point(10, 74);
-            this.btn_preview.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_preview.Location = new System.Drawing.Point(20, 74);
+            this.btn_preview.Margin = new System.Windows.Forms.Padding(2);
             this.btn_preview.Name = "btn_preview";
             this.btn_preview.Size = new System.Drawing.Size(24, 26);
             this.btn_preview.TabIndex = 0;
@@ -507,14 +554,17 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // player
+            // RepeatTimer
             // 
-            this.player.Enabled = true;
-            this.player.Location = new System.Drawing.Point(316, 32);
-            this.player.Name = "player";
-            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
-            this.player.Size = new System.Drawing.Size(618, 56);
-            this.player.TabIndex = 13;
+            this.RepeatTimer.Tick += new System.EventHandler(this.RepeatTimer_Tick);
+            // 
+            // next_time
+            // 
+            this.next_time.Tick += new System.EventHandler(this.next_time_Tick);
+            // 
+            // random_time
+            // 
+            this.random_time.Tick += new System.EventHandler(this.random_time_Tick);
             // 
             // Form1
             // 
@@ -526,7 +576,7 @@
             this.Controls.Add(this.splitter2);
             this.Controls.Add(this.splitter1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Simple Music Player";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -540,9 +590,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pic_art)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -561,7 +611,6 @@
         private System.Windows.Forms.Button btn_open;
         private System.Windows.Forms.Button btn_next;
         private System.Windows.Forms.PictureBox pic_art;
-        private System.Windows.Forms.ListBox track_list;
         private System.Windows.Forms.TrackBar track_volume;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbl_track_start;
@@ -580,6 +629,11 @@
         private System.Windows.Forms.Button btn_savef;
         private System.Windows.Forms.Button btn_loadf;
         private System.Windows.Forms.Button btn_delete;
+        private System.Windows.Forms.ListBox track_list;
+        private System.Windows.Forms.Timer RepeatTimer;
+        private System.Windows.Forms.Timer next_time;
+        private System.Windows.Forms.Timer random_time;
+        private System.Windows.Forms.Button btn_repeat;
     }
 }
 
